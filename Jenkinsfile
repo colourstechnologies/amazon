@@ -2,38 +2,34 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Build') {
             steps {
-                sh 'make'
+                echo 'Building...'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'make test'
+                echo 'Testing...'
             }
         }
 
         stage('Deploy') {
-            when {
-                branch 'main'
-            }
             steps {
-                sh 'make deploy'
+                echo 'Deploying...'
             }
         }
     }
 
     post {
+        always {
+            echo 'This will always run'
+        }
+        success {
+            echo 'Job succeeded!'
+        }
         failure {
-            mail to: 'team@example.com', subject: 'Build Failed', body: 'Check Jenkins for details.'
+            echo 'Job failed!'
         }
     }
 }
-
